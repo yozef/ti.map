@@ -926,12 +926,14 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 	
 	@Override
     public void onCameraMove() {
-		proxy.fireEvent("cameramove");
+		Log.i(TAG, "onCameraMove");
+		//proxy.fireEvent("cameramove");
     }
 
     @Override
     public void onCameraMoveCanceled() {
-    		proxy.fireEvent("cameramovecancelled");
+    		Log.i(TAG, "onCameraMoveCanceled");
+    		//proxy.fireEvent("cameramovecancelled");
     }
 
     @Override
