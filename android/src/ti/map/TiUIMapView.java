@@ -194,6 +194,10 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 	}
 
 	public void processMapProperties(KrollDict d) {
+		
+		// Hardcoded No Indoor Picker Level
+		setIndoorLevelPickerEnabled(false);
+		
 		if (d.containsKey(TiC.PROPERTY_USER_LOCATION)) {
 			setUserLocationEnabled(TiConvert.toBoolean(d,
 					TiC.PROPERTY_USER_LOCATION, false));
@@ -317,6 +321,10 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 
 	protected void setMapToolbarEnabled(boolean enabled) {
 		map.getUiSettings().setMapToolbarEnabled(enabled);
+	}
+	
+	protected void setIndoorLevelPickerEnabled(boolean enabled) {
+		map.getUiSettings().setIndoorLevelPickerEnabled(enabled);
 	}
 
 	public float getMaxZoomLevel() {
@@ -926,7 +934,7 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 	
 	@Override
     public void onCameraMove() {
-		Log.i(TAG, "onCameraMove");
+		//Log.i(TAG, "onCameraMove");
 		//proxy.fireEvent("cameramove");
     }
 
