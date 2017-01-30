@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 	TiC.PROPERTY_TITLEID,
 	TiC.PROPERTY_LATITUDE,
 	TiC.PROPERTY_LONGITUDE,
+	TiC.PROPERTY_ROTATION,
 	MapModule.PROPERTY_DRAGGABLE,
 	TiC.PROPERTY_IMAGE,
 	TiC.PROPERTY_PINCOLOR,
@@ -76,6 +77,7 @@ public class AnnotationProxy extends KrollProxy
 	private static final int MSG_SET_LAT = MSG_FIRST_ID + 301;
 	private static final int MSG_SET_DRAGGABLE = MSG_FIRST_ID + 302;
 	private static final int MSG_UPDATE_INFO_WINDOW = MSG_FIRST_ID + 303;
+	private static final int MSG_SET_ROT = MSG_FIRST_ID + 304;
 
 	public AnnotationProxy()
 	{
@@ -122,6 +124,13 @@ public class AnnotationProxy extends KrollProxy
 				return true;
 			}
 
+			case MSG_SET_ROT: {
+				result = (AsyncResult) msg.obj;
+				setRotation(TiConvert.toFloat(getProperty(TiC.PROPERTY_ROTATION)));
+				result.setResult(null);
+				return true;
+			}
+
 			case MSG_SET_DRAGGABLE: {
 				result = (AsyncResult) msg.obj;
 				marker.getMarker().setDraggable((Boolean) result.getArg());
@@ -145,17 +154,26 @@ public class AnnotationProxy extends KrollProxy
 		LatLng position = new LatLng(latitude, longitude);
 		marker.getMarker().setPosition(position);
 	}
+	
+	public void setRotation(float rotation)
+	{
+		marker.getMarker().setRotation(rotation);
+	}
 
 	public void processOptions()
 	{
 		double longitude = 0;
 		double latitude = 0;
+		double rotation = 0;
 
 		if (hasProperty(TiC.PROPERTY_LONGITUDE)) {
 			longitude = TiConvert.toDouble(getProperty(TiC.PROPERTY_LONGITUDE));
 		}
 		if (hasProperty(TiC.PROPERTY_LATITUDE)) {
 			latitude = TiConvert.toDouble(getProperty(TiC.PROPERTY_LATITUDE));
+		}
+		if (hasProperty(TiC.PROPERTY_ROTATION)) {
+			rotation = TiConvert.toFloat(getProperty(TiC.PROPERTY_ROTATION));
 		}
 		LatLng position = new LatLng(latitude, longitude);
 		markerOptions.position(position);
@@ -341,6 +359,8 @@ public class AnnotationProxy extends KrollProxy
 			TiMessenger.sendBlockingMainMessage(getMainHandler().obtainMessage(MSG_SET_LON), TiConvert.toDouble(value));
 		} else if (name.equals(TiC.PROPERTY_LATITUDE)) {
 			TiMessenger.sendBlockingMainMessage(getMainHandler().obtainMessage(MSG_SET_LAT), TiConvert.toDouble(value));
+		} else if (name.equals(TiC.PROPERTY_ROTATION)) {
+			TiMessenger.sendBlockingMainMessage(getMainHandler().obtainMessage(MSG_SET_ROT), TiConvert.toFloat(value));
 		} else if (name.equals(TiC.PROPERTY_TITLE)) {
 			String title = TiConvert.toString(value);
 			annoTitle = title;
