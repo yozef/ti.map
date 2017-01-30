@@ -2,6 +2,26 @@
 
 This is the Map Module for Titanium. Please use [JIRA](http://jira.appcelerator.org) to report issues or ask our [TiSlack community](http://tislack.org) for help! :rocket:
 
+## NOTE About this ti.map branch
+- ClickEvent on overlays (Circles, Polygons, etc;) have been removed. The performance on this event looping through a lot of overlays, makes this method useless due to performance issues On Android-only.
+
+## Event Liteners
+```javascript
+$.mapview.addEventListener('regionchanged', function(e) {
+// ANDROID-Only e.done param - when the Map Idles
+if (e.done) {
+    Ti.API.info("Map RegionChanged END - idle in GMaps SDK");
+} else {
+   Ti.API.info("Map Region Changing...");
+}
+});
+
+$.mapview.addEventListener('regionwillchange', function(e) {
+   // ANDROID-Only e.reason param
+   Ti.API.info("Map Region Will Change..." + (OS_ANDROID?e.reason:null)); // Android - Only
+});
+```
+
 ## Contributors
 
 * Please see https://github.com/appcelerator-modules/ti.map/graphs/contributors

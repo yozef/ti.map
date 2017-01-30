@@ -912,7 +912,8 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 					(bounds.northeast.latitude - bounds.southwest.latitude));
 			d.put(TiC.PROPERTY_LONGITUDE_DELTA,
 					(bounds.northeast.longitude - bounds.southwest.longitude));
-
+			Boolean isDoneMoving = false;
+			d.put("done", isDoneMoving);
 			// In iOS, the region property is updated in the
 			// 'regionDidChangeAnimated' method.
 			// This allows a user to call getRegion and receive the current map
@@ -946,8 +947,11 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 
     @Override
     public void onCameraIdle() {
-    		Log.i(TAG, "onCameraIdle");
-    		//proxy.fireEvent(TiC.EVENT_REGION_IDLE);
+    		//Log.i(TAG, "onCameraIdle");
+    		KrollDict d = new KrollDict();
+    		Boolean isDoneMoving = true;
+		d.put("done", isDoneMoving);
+    		proxy.fireEvent(TiC.EVENT_REGION_CHANGED, d);
     }
 
 
