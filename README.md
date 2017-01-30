@@ -5,15 +5,21 @@ This is the Map Module for Titanium. Please use [JIRA](http://jira.appcelerator.
 ## NOTE About this ti.map branch
 - ClickEvent on overlays (Circles, Polygons, etc;) have been removed. The performance on this event looping through a lot of overlays, makes this method useless due to performance issues On Android-only.
 
-## Event Liteners
+## Event Listeners (differences with iOS) 
+# Google Maps iOS & Android SDKs have different behavior by default
 ```javascript
+var androidLastRegionChangedLocation = {};
 $.mapview.addEventListener('regionchanged', function(e) {
-// ANDROID-Only e.done param - when the Map Idles
-if (e.done) {
-    Ti.API.info("Map RegionChanged END - idle in GMaps SDK");
-} else {
-   Ti.API.info("Map Region Changing...");
+if (OS_ANDROID && !e.done) { // Android Map RegionChanged END - idle in GMaps SDK and has not params available
+if (OS_ANDROID) Ti.API.info('**** regionchanged **Android ** e.done: ' + e.done);
+androidLastRegionChangedLocation.longitude = e.longitude;
+androidLastRegionChangedLocation.latitude = e.latitude;
+return;
 }
+
+_longitude = OS_ANDROID?androidLastRegionChangedLocation.longitude:e.longitude;
+_latitude = OS_ANDROID?androidLastRegionChangedLocation.latitude:e.latitude;
+// use these new values for iOS & Android
 });
 
 $.mapview.addEventListener('regionwillchange', function(e) {
