@@ -5,6 +5,10 @@ This is the Map Module for Titanium. Please use [JIRA](http://jira.appcelerator.
 ## NOTE About this ti.map branch
 - ClickEvent on overlays (Circles, Polygons, etc;) have been removed. The performance on this event looping through a lot of overlays, makes this method useless due to performance issues On Android-only.
 
+ti.map Android Annotation 
+annotation.flat = true; // option
+annotation.rotation = 45; // option
+
 ## Event Listeners (differences with iOS) 
 # Google Maps iOS & Android SDKs have different behavior by default
 ```javascript
