@@ -29,11 +29,4 @@ public class TiMarker {
 		return proxy;
 	}
 	
-	public void release() {
-		marker.remove();
-		if (proxy != null) {
-			proxy.release();
-			proxy = null;
-		}
-	}
 }

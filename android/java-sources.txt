@@ -1,6 +1,7 @@
 "/Users/theFool/Documents/ti.map/android/build/generated/java/ti/map/MapBootstrap.java"
 "/Users/theFool/Documents/ti.map/android/src/ti/map/AnnotationProxy.java"
 "/Users/theFool/Documents/ti.map/android/src/ti/map/CircleProxy.java"
+"/Users/theFool/Documents/ti.map/android/src/ti/map/Helper/LatLngInterpolator.java"
 "/Users/theFool/Documents/ti.map/android/src/ti/map/MapModule.java"
 "/Users/theFool/Documents/ti.map/android/src/ti/map/PolygonProxy.java"
 "/Users/theFool/Documents/ti.map/android/src/ti/map/PolylineProxy.java"

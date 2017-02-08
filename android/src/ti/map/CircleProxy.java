@@ -53,6 +53,7 @@ public class CircleProxy  extends KrollProxy implements IShape
 		super();
 	}
 
+
 	private int toPx(Object size){
 		ViewGroup rootViewGroup = (ViewGroup)TiApplication.getAppCurrentActivity().getWindow().getDecorView().findViewById(android.R.id.content);
 		return TiConvert.toTiDimension(size, TiDimension.COMPLEX_UNIT_AUTO).getAsPixels(rootViewGroup);

@@ -162,6 +162,7 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 					android.R.id.content);
 			setBackgroundTransparent(rootView);
 		}
+		
 		processMapProperties(proxy.getProperties());
 		processPreloadRoutes();
 		processPreloadPolygons();
@@ -197,6 +198,7 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 		
 		// Hardcoded No Indoor Picker Level
 		setIndoorLevelPickerEnabled(false);
+		map.setIndoorEnabled(false); // remove indoor polygons
 		
 		if (d.containsKey(TiC.PROPERTY_USER_LOCATION)) {
 			setUserLocationEnabled(TiConvert.toBoolean(d,
@@ -462,7 +464,11 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 	protected void removeAllAnnotations() {
 		for (int i = 0; i < timarkers.size(); i++) {
 			TiMarker timarker = timarkers.get(i);
-			timarker.release();
+			timarker.getMarker().remove();
+			AnnotationProxy proxy = timarker.getProxy();
+			if (proxy != null) {
+				proxy.setTiMarker(null);
+			}
 		}
 		timarkers.clear();
 	}
@@ -489,7 +495,11 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 		}
 
 		if (timarker != null && timarkers.remove(timarker)) {
-			timarker.release();
+			timarker.getMarker().remove();
+			AnnotationProxy proxy = timarker.getProxy();
+			if (proxy != null) {
+				proxy.setTiMarker(null);
+			}
 		}
 	}
 
@@ -880,6 +890,9 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 		timarkers.clear();
 		super.release();
 	}
+	
+	double _longitudeDelta = 0;
+	double _latitudeDelta = 0;
 
 	@Override
 	public void onCameraChange(CameraPosition position) {
@@ -904,6 +917,10 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
 					(bounds.northeast.latitude - bounds.southwest.latitude));
 			d.put(TiC.PROPERTY_LONGITUDE_DELTA,
 					(bounds.northeast.longitude - bounds.southwest.longitude));
+			
+			_longitudeDelta = bounds.northeast.longitude - bounds.southwest.longitude;
+			_latitudeDelta = bounds.northeast.latitude - bounds.southwest.latitude;
+			
 			Boolean isDoneMoving = false;
 			d.put("done", isDoneMoving);
 			// In iOS, the region property is updated in the
@@ -943,6 +960,8 @@ public class TiUIMapView extends TiUIFragment implements GoogleMap.OnMarkerClick
     		KrollDict d = new KrollDict();
     		Boolean isDoneMoving = true;
 		d.put("done", isDoneMoving);
+		d.put("longitudeDelta", _longitudeDelta);
+		d.put("latitudeDelta", _latitudeDelta);
     		proxy.fireEvent(TiC.EVENT_REGION_CHANGED, d);
     }
 
